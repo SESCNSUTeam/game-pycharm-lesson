@@ -1,29 +1,9 @@
-import sys, pygame
-import Object as obj
-size = width, height = 1280, 920
+import Game
 
-speed = [1,1]
-black = 0,0,0
-screen = pygame.display.set_mode(size)
+screen = Game.Game("My first caption",
+                   1280,
+                   720,
+                   "ball.png",
+                   60)
 
-image = pygame.image.load("ball.png")
-object = obj.Object(image ,30,30, width, height)
-
-def main():
-    while True:
-        update()
-        render()
-
-def render():
-    screen.fill(black)
-
-    object.render(screen)
-    pygame.display.flip()
-
-def update():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
-    object.update()
-
-
-main()
+screen.run()
