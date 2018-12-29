@@ -1,9 +1,8 @@
 import pygame
 import sys
-
-from Player import Player
+import Player
 from collections import defaultdict
-
+colour = 130,30,20
 class Game:
     def __init__(self,
                  caption,
@@ -11,14 +10,13 @@ class Game:
                  height,
                  back_image_filename,
                  frame_rate):
-        self.player = Player(30,30)
         self.background_image = \
             pygame.image.load(back_image_filename)
 
         self.frame_rate = frame_rate
         self.game_over = False
         self.objects = []
-
+        self.state = 'normal'
         pygame.mixer.pre_init(44100, 16, 2, 4096)
         pygame.init()
         pygame.font.init()
@@ -29,10 +27,6 @@ class Game:
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
 
-        self.keydown_handlers[pygame.K_LEFT].append(self.player.handle)
-        self.keydown_handlers[pygame.K_RIGHT].append(self.player.handle)
-        self.keydown_handlers[pygame.K_UP].append(self.player.handle)
-        self.keydown_handlers[pygame.K_DOWN].append(self.player.handle)
 
         self.mouse_handlers = []
 
@@ -53,7 +47,7 @@ class Game:
                 for handler in self.keydown_handlers[event.key]:
                     handler(event.key)
             elif event.type == pygame.KEYUP:
-                for handler in self.keydown_handlers[event.key]:
+                for handler in self.keyup_handlers[event.key]:
                     handler(event.key)
             elif event.type in (pygame.MOUSEBUTTONDOWN,
                                 pygame.MOUSEBUTTONUP,
@@ -61,8 +55,10 @@ class Game:
                 for handler in self.mouse_handlers:
                     handler(event.type, event.pos)
 
+
     def run(self):
         while not self.game_over:
+            self.surface.fill(colour)
             self.surface.blit(self.background_image, (0, 0))
 
             self.handle_events()

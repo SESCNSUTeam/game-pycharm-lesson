@@ -42,6 +42,9 @@ class GameObject:
     def centery(self):
         return self.bounds.centery
 
+    def get_rect(self):
+        return self.bounds
+
     def draw(self, surface):
         pass
 
@@ -53,3 +56,4 @@ class GameObject:
             return
 
         self.move(*self.speed)
+
