@@ -5,6 +5,7 @@ size = width, height = 1280, 920
 speed = [1,1]
 black = 0, 0, 0
 screen = pygame.display.set_mode(size)
+frame_rate = 60
 image = pygame.image.load("ball.png")
 object = obj.Object(image, 30, 30, width, height)
 timer = pygame.time.Clock()
