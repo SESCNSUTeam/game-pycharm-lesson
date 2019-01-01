@@ -1,6 +1,5 @@
 import pygame
 import sys
-import Player
 from collections import defaultdict
 colour = 130,30,20
 class Game:
@@ -13,6 +12,7 @@ class Game:
         self.background_image = \
             pygame.image.load(back_image_filename)
 
+        self.clock = pygame.time.Clock()
         self.frame_rate = frame_rate
         self.game_over = False
         self.objects = []
@@ -26,11 +26,10 @@ class Game:
         self.clock = pygame.time.Clock()
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
-
-
         self.mouse_handlers = []
 
-    def update(self):
+    def update(self,dt):
+
         for o in self.objects:
             o.update()
 
@@ -62,7 +61,7 @@ class Game:
             self.surface.blit(self.background_image, (0, 0))
 
             self.handle_events()
-            self.update()
+            self.update(self.clock.get_time())
             self.draw()
 
             pygame.display.update()

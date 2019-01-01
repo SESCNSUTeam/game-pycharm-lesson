@@ -2,9 +2,10 @@ from pygame.rect import Rect
 
 
 class GameObject:
-    def __init__(self, x, y, w, h, speed=[0,0]):
+    def __init__(self, x, y, w, h, acceleration, speed=(0,0)):
         self.bounds = Rect(x, y, w, h)
         self.speed = speed
+        self.acceleration = acceleration
 
     @property
     def left(self):
@@ -42,6 +43,9 @@ class GameObject:
     def centery(self):
         return self.bounds.centery
 
+    def onCollision(self, object):
+        pass
+
     def get_rect(self):
         return self.bounds
 
@@ -51,7 +55,7 @@ class GameObject:
     def move(self, dx, dy):
         self.bounds = self.bounds.move(dx, dy)
 
-    def update(self):
+    def update(self,dt):
         if self.speed == [0, 0]:
             return
 
