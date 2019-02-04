@@ -69,7 +69,7 @@ class GameClient:
             for event in pygame.event:
                 
     def update_display(self):
-
+        pass
 
     def run(self):
         clock = pygame.time.Clock()
