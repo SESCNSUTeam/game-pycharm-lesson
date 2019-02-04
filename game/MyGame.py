@@ -1,7 +1,10 @@
 import pygame
 import sys
+
 from collections import defaultdict
 colour = 130,30,20
+
+
 class Game:
     def __init__(self,
                  caption,
@@ -25,6 +28,7 @@ class Game:
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
         self.mouse_handlers = []
+        self.cast_list = []
 
     def update(self,dt):
         pass

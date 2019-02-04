@@ -1,6 +1,0 @@
-import pygame
-
-G_WIDTH = 1280
-G_HEIGHT = 720
-
-G_FRAMERATE = 60

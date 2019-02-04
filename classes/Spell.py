@@ -8,12 +8,16 @@ class Spell:
         self.wizard = wizard
         self.action()
         self.effect = effect
-
-    def action(self):
-        pass
+        self.timer = 10000 #mls
 
     def update(self):
         pass
 
     def draw(self, surface):
         self.effect.draw(surface)
+
+    def isTimeRemaning(self):
+        if self.timer <=0:
+            return True
+        else:
+            return False
