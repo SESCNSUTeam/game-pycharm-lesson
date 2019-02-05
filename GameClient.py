@@ -1,7 +1,7 @@
 
 import pygame
 from time import time, sleep
-from myGame.GameObject import CommonGameObject
+from CommonGameObject import CommonGameObject
 
 
 class GameClient:
@@ -67,7 +67,8 @@ class GameClient:
     def event_handling(self):
         if pygame.display.get_active():
             for event in pygame.event:
-                
+                pass
+
     def update_display(self):
         pass
 

@@ -1,5 +1,5 @@
 import pygame as pg
-import Game.classes.config as c
+import
 
 
 def convert_event_g_to_py(g_event):
@@ -8,6 +8,7 @@ def convert_event_g_to_py(g_event):
 
 
 def convert_event_py_to_g(pygame_event):
+
     def fill_dict(py_event, dictionary):
         if py_event.type == pg.KEYDOWN:
             dictionary["key"] = py_event.key
@@ -25,10 +26,12 @@ def convert_event_py_to_g(pygame_event):
     d = dict()
     g_event = GEvent(pygame_event.type - c.USEREVENT, d)
     fill_dict(pygame_event, d)
+
     return g_event
 
 
 class GEvent:
+
     def __init__(self, type, dict):
         self.type = type
         self.dict = dict
@@ -39,6 +42,7 @@ class GEvent:
 
 
 class Cast(GEvent):
+
     def __init__(self,type, dict):
         GEvent.__init__(self,type, dict)
 
