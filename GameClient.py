@@ -67,7 +67,9 @@ class GameClient:
     def event_handling(self):
         if pygame.display.get_active():
             for event in pygame.event:
-                pass
+                if event.type == pygame.QUIT:
+                    quit()
+
 
     def update_display(self):
         pass

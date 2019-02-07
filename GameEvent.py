@@ -1,5 +1,5 @@
 import pygame as pg
-import
+import config as c
 
 
 def convert_event_g_to_py(g_event):
@@ -43,8 +43,8 @@ class GEvent:
 
 class Cast(GEvent):
 
-    def __init__(self,type, dict):
-        GEvent.__init__(self,type, dict)
+    def __init__(self, type, dict):
+        GEvent.__init__(self, type, dict)
 
     def post(self):
         GEvent.post(self)
