@@ -104,6 +104,6 @@ class GameClient:
 
 
 client = GameClient((680, 720), 60)
-dog = ClientGameObject(0, 0, "resources\\dog.jpg")
+dog = ClientGameObject(0, 0, "client\\resources\\dog.jpg")
 client.load_object(dog)
 client.run()

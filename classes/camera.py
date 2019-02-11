@@ -1,7 +1,7 @@
 import pygame
 from classes.CommonGameObject import CommonGameObject
 
-
+""" не использовать эту камеру"""
 class Camera(CommonGameObject):
 
     def __init__(self, x, y, w, h):
