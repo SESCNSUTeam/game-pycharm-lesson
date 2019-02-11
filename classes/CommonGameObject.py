@@ -7,5 +7,4 @@ class CommonGameObject(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
-        self.ID = None
 

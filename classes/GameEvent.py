@@ -1,5 +1,5 @@
 import pygame as pg
-import config as c
+from classes import config as c
 
 
 def convert_event_g_to_py(g_event):

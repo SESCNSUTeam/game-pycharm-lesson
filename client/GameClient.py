@@ -1,26 +1,29 @@
 
 import pygame
-from time import time, sleep
-from CommonGameObject import CommonGameObject
+from classes.camera import Camera2
+from classes.GameObjects import ClientGameObject
 
 
 class GameClient:
 
     def __init__(self, size, fps):
         pygame.init()
+        pygame.font.init()
         self.width = size[0]
         self.height = size[1]
         self.fps = fps
-        self.objects = pygame.sprite.RenderPlain()
+        self.background = pygame.Surface(self.size())
+        self.background.fill((254, 65, 43))
+        self.objects = pygame.sprite.Group()
         self.icon = None
         self.caption = None
-        self.background = pygame.Surface(self.size())
         self.play = True
-        self.time_per_frame = 0
         self.client = None
         self.server = None
         self.events = None
         self.screen = pygame.display.set_mode((self.width, self.height))
+        self.camera = Camera2(self.width, self.height)
+        self.camera.move(10, 0)
 
     def set_caption(self, caption):
         self.caption = caption
@@ -66,15 +69,41 @@ class GameClient:
 
     def event_handling(self):
         if pygame.display.get_active():
-            for event in pygame.event:
+            for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    quit()
-
+                    self.play = False
+                if event.type == pygame.KEYDOWN:
+                    pass
+                    """
+                    if event.key == pygame.K_d:
+                        self.her.move(10, 0)
+                    elif event.key == pygame.K_a:
+                        self.her.move(-10, 0)
+                    elif event.key == pygame.K_w:
+                        self.her.move(0, 10)
+                    elif event.key == pygame.K_s:
+                        self.her.move(0, -10)
+                    """
+    def update(self):
+        pass
 
     def update_display(self):
-        pass
+        self.screen.blit(self.background, (0, 0))
+        self.camera.apply(self.objects)
+        self.objects.draw(self.screen)
+        pygame.display.flip()
 
     def run(self):
         clock = pygame.time.Clock()
         while self.play:
-            clock.tick(60)
+            self.event_handling()
+            self.update()
+            self.update_display()
+            clock.tick(self.fps)
+            print(self.camera.state.left)
+
+
+client = GameClient((680, 720), 60)
+dog = ClientGameObject(0, 0, "resources\\dog.jpg")
+client.load_object(dog)
+client.run()
