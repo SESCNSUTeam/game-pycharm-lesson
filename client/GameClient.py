@@ -1,7 +1,6 @@
-
-import pygame
-from classes.camera import Camera2
-from classes.GameObjects import ClientGameObject
+from classes import MapLoader
+from classes.camera import Camera
+from classes.GameObjects import *
 
 
 class GameClient:
@@ -22,8 +21,10 @@ class GameClient:
         self.server = None
         self.events = None
         self.screen = pygame.display.set_mode((self.width, self.height))
-        self.camera = Camera2(self.width, self.height)
-        self.camera.move(10, 0)
+        self.camera = Camera(self.width, self.height)
+        self.camera_target = ClientGameObject(0, 0)
+        self.objects.add(self.camera_target)
+        self.map = None
 
     def set_caption(self, caption):
         self.caption = caption
@@ -73,23 +74,25 @@ class GameClient:
                 if event.type == pygame.QUIT:
                     self.play = False
                 if event.type == pygame.KEYDOWN:
-                    pass
-                    """
                     if event.key == pygame.K_d:
-                        self.her.move(10, 0)
+                        self.camera_target.move(10, 0)
                     elif event.key == pygame.K_a:
-                        self.her.move(-10, 0)
+                        self.camera_target.move(-10, 0)
                     elif event.key == pygame.K_w:
-                        self.her.move(0, 10)
+                        self.camera_target.move(0, -10)
                     elif event.key == pygame.K_s:
-                        self.her.move(0, -10)
-                    """
+                        self.camera_target.move(0, 10)
+                        print(self.camera_target.rect.topleft)
+
     def update(self):
+        self.camera.update(self.camera_target)
         pass
 
     def update_display(self):
         self.screen.blit(self.background, (0, 0))
         self.camera.apply(self.objects)
+        self.camera.apply(self.map.pr)
+        self.map.pr.draw(self.screen)
         self.objects.draw(self.screen)
         pygame.display.flip()
 
@@ -100,10 +103,4 @@ class GameClient:
             self.update()
             self.update_display()
             clock.tick(self.fps)
-            print(self.camera.state.left)
 
-
-client = GameClient((680, 720), 60)
-dog = ClientGameObject(0, 0, "client\\resources\\dog.jpg")
-client.load_object(dog)
-client.run()
