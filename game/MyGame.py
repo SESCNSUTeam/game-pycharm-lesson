@@ -1,8 +1,7 @@
 import pygame
 import sys
 
-from collections import defaultdict
-colour = 130,30,20
+colour = 130, 30, 20
 
 
 class Game:
@@ -24,13 +23,10 @@ class Game:
         pygame.font.init()
         self.surface = pygame.display.set_mode((width, height))
         pygame.display.set_caption(caption)
-        self.clock = pygame.time.Clock()
-        self.keydown_handlers = defaultdict(list)
-        self.keyup_handlers = defaultdict(list)
         self.mouse_handlers = []
         self.cast_list = []
 
-    def update(self,dt):
+    def update(self, dt):
         pass
 
     def draw(self):
@@ -60,7 +56,7 @@ class Game:
             self.surface.blit(self.background_image, (0, 0))
 
             self.handle_events()
-            self.update(self.clock.get_time())
+
             self.draw()
 
             pygame.display.update()

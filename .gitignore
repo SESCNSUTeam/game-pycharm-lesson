@@ -1,0 +1,7 @@
+
+.idea/
+venv
+classes/__pycache__/
+client/__pycache__/
+game/__pycache__/
+*.whl
