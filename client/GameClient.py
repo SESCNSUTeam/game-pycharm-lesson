@@ -20,11 +20,11 @@ class GameClient:
         self.client = None
         self.server = None
         self.events = None
+        self.map = MapLoader.Map("maps\\map_test.json")
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.camera = Camera(self.width, self.height)
         self.camera_target = ClientGameObject(0, 0)
         self.objects.add(self.camera_target)
-        self.map = None
 
     def set_caption(self, caption):
         self.caption = caption
@@ -104,3 +104,8 @@ class GameClient:
             self.update_display()
             clock.tick(self.fps)
 
+
+c = GameClient((1200, 840), 60)
+d = ClientGameObject(0, 0)
+c.load_object(d)
+c.run()
