@@ -8,6 +8,10 @@ class GameClient:
     def __init__(self, size, fps):
         pygame.init()
         pygame.font.init()
+        pygame.joystick.init()
+        self.joys = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
+        for j in self.joys:
+            j.init()
         self.width = size[0]
         self.height = size[1]
         self.fps = fps
@@ -23,7 +27,7 @@ class GameClient:
         self.map = MapLoader.Map("maps\\map_test.json")
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.camera = Camera(self.width, self.height)
-        self.camera_target = ClientGameObject(0, 0)
+        self.camera_target = ClientGameObject(40, 40)
         self.objects.add(self.camera_target)
 
     def set_caption(self, caption):
@@ -73,6 +77,8 @@ class GameClient:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.play = False
+                if event.type == pygame.JOYHATMOTION:
+                    self.camera_target.move(10, 0)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_d:
                         self.camera_target.move(10, 0)
@@ -103,9 +109,3 @@ class GameClient:
             self.update()
             self.update_display()
             clock.tick(self.fps)
-
-
-c = GameClient((1200, 840), 60)
-d = ClientGameObject(0, 0)
-c.load_object(d)
-c.run()

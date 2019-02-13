@@ -14,6 +14,3 @@ class Map:
         for wall in data["props"]["walls"]:
             w = Wall(wall["left"], wall["top"], wall["width"], wall["height"])
             self.pr.add(w)
-
-
-map = Map("maps\\map_test.json")

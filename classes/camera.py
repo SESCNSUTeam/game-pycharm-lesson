@@ -14,5 +14,5 @@ class Camera(CommonGameObject):
             target.rect = pygame.Rect(target.x - self.x, target.y - self.y, target.rect.width, target.rect.height)
 
     def update(self, target):
-        self.x = target.x - self.width / 2 + target.rect.width / 2
-        self.y = target.y - self.height / 2 + target.rect.height / 2
+        self.x = target.centerx - self.width / 2
+        self.y = target.centery - self.height / 2
