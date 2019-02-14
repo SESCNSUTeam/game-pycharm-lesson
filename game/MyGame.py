@@ -49,7 +49,6 @@ class Game:
                 for handler in self.mouse_handlers:
                     handler(event.type, event.pos)
 
-
     def run(self):
         while not self.game_over:
             self.surface.fill(colour)

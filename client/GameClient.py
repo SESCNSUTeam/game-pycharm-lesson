@@ -1,14 +1,11 @@
 import sys
-
-import pygame
-
-from classes.Event import convert_event_py_to_g
-from classes.Camera import Camera2
-from classes.GameObject import ClientGameObject
-import classes.config as c
-
-#imported by Bulat
 from collections import defaultdict
+
+from classes import MapLoader
+from classes.Camera import Camera
+from classes.Event import convert_event_py_to_g
+from classes.GameObject import *
+import classes.config as c
 
 
 class GameClient:
@@ -16,6 +13,10 @@ class GameClient:
     def __init__(self, size, fps):
         pygame.init()
         pygame.font.init()
+        pygame.joystick.init()
+        self.joys = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
+        for j in self.joys:
+            j.init()
         self.width = size[0]
         self.height = size[1]
         self.fps = fps
@@ -28,16 +29,17 @@ class GameClient:
         self.client = None
         self.server = None
         self.events = None
+        self.map = MapLoader.Map("..//maps//map_test.json")
         self.screen = pygame.display.set_mode((self.width, self.height))
-        self.camera = Camera2(self.width, self.height)
-        self.camera.move(10, 0)
-
-        # new fields which added by Bulat
+        self.camera = Camera(self.width, self.height)
+        self.camera_target = ClientGameObject(40, 40)
+        self.objects.add(self.camera_target)
+        # Добавлено Булатом
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
+        self.mouse_handlers = []
         self.cast_list = []
         self.event_list = []
-        self.mouse_handlers = []
 
     def set_caption(self, caption):
         self.caption = caption
@@ -102,16 +104,15 @@ class GameClient:
                     handler(event.type, event.dict["pos"])
         self.event_list.clear()
 
-    def update(self):
-        self.camera.update()
-        pass
-
-    def spell_handling(self, event):
+    def update(self, dt):
+        self.camera.update(self.camera_target)
         pass
 
     def update_display(self):
         self.screen.blit(self.background, (0, 0))
         self.camera.apply(self.objects)
+        self.camera.apply(self.map.pr)
+        self.map.pr.draw(self.screen)
         self.objects.draw(self.screen)
         pygame.display.flip()
 
@@ -119,12 +120,11 @@ class GameClient:
         clock = pygame.time.Clock()
         while self.play:
             self.event_handling()
-            self.update()
+            self.update(clock.get_time())
             self.update_display()
             clock.tick(self.fps)
 
-
-client = GameClient((680, 720), 60)
-dog = ClientGameObject(0, 0, "resources//dog.jpg")
-client.load_object(dog)
-client.run()
+def start():
+    client = GameClient((1280,720),60)
+    client.run()
+start()

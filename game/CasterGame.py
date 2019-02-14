@@ -53,8 +53,6 @@ class SpellCaster:
         for o in self.objects:
             o.draw(self.surface)
 
-
-
     def run(self):
         while not self.game_over:
             self.surface.fill(colour)
