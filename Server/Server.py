@@ -10,6 +10,7 @@ class Server(threading.Thread):
         self.address = (addr, port)
         self.output_queue = []
         self.input_queue = []
+        self.running = False
         self.lock = threading.Lock()
 
     async def post_data(self):
@@ -17,7 +18,10 @@ class Server(threading.Thread):
     
     async def read_data(self):
         print('reading data')
-    
+
+    def stop_server(self):
+        self.running = False
+
     def get_input(self):
         return 
     
@@ -33,6 +37,7 @@ class Server(threading.Thread):
             self.lock.release()
 
     def run(self):
+        self.running = True
         main_loop = asyncio.new_event_loop()
         asyncio.set_event_loop(main_loop)
         main_loop = asyncio.get_event_loop()
@@ -40,7 +45,8 @@ class Server(threading.Thread):
             main_loop.create_task(self.post_data()),
             main_loop.create_task(self.read_data())
         ]
-        main_loop.run_until_complete(asyncio.wait(tasks))
+        while self.running:
+            main_loop.run_until_complete(asyncio.tasks)
 
 
 if __name__ == '__main__':
