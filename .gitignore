@@ -1,5 +1,4 @@
 
-*.iml
-
-Server/__pycache__
 .idea/
+__pychache__/
+venv/

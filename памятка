@@ -1,0 +1,21 @@
+ИЕРАРХИЯ ПАПОК:
+
+project_folder-
+    classes
+        config.py
+        Event.py
+        Spell.py
+    game
+        MainClass.py
+        GameObject.py (CommonGameObject.py, Entity.py and e.t.c.)
+        Mob.py
+        Player.py
+    net-
+        UDP # Возможно не пригодится, зависит от реализации модуля и протокола UDP, при абстракции в отдельную папку
+    resources
+        ball.png
+        black.png
+        brick.png
+        bullet2x2.png
+        green.png
+...

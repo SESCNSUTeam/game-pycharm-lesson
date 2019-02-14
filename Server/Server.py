@@ -13,10 +13,10 @@ class Server(threading.Thread):
         self.running = False
         self.lock = threading.Lock()
 
-    async def post_data(self):
+    def post_data(self):
         print("post data")
     
-    async def read_data(self):
+    def read_data(self):
         print('reading data')
 
     def stop_server(self):
