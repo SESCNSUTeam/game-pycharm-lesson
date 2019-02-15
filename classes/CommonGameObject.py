@@ -41,4 +41,3 @@ class CommonGameObject(pygame.sprite.Sprite):
     @y.setter
     def y(self, value):
         self.global_rect.top = value
-

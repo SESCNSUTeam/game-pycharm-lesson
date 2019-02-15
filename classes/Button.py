@@ -57,3 +57,4 @@ class Button(CommonGameObject):
     def set_img(self, img):
         self.image = img
         self.rect = pygame.Rect()
+

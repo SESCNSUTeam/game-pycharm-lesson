@@ -16,3 +16,7 @@ class Camera(CommonGameObject):
     def update(self, target):
         self.x = target.centerx - self.width / 2
         self.y = target.centery - self.height / 2
+
+    def set_size(self, size=(1280, 720)):
+        self.width = size[0]
+        self.height = size[1]

@@ -1,11 +1,11 @@
 import sys
+import classes.config as c
 from collections import defaultdict
 
 from classes import MapLoader
-from classes.Camera import Camera
 from classes.Event import convert_event_py_to_g
+from classes.camera import Camera
 from classes.GameObject import *
-import classes.config as c
 
 
 class GameClient:
@@ -24,22 +24,23 @@ class GameClient:
         self.background.fill((254, 65, 43))
         self.objects = pygame.sprite.Group()
         self.icon = None
-        self.caption = None
+        self.caption = "Caster-Game"
         self.play = True
-        self.client = None
-        self.server = None
-        self.events = None
-        self.map = MapLoader.Map("..//maps//map_test.json")
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.map = MapLoader.Map("..\\maps\\map_test.json")
+        self.screen = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
         self.camera = Camera(self.width, self.height)
-        self.camera_target = ClientGameObject(40, 40)
+
+        # added by Julian
+        self.session = None
+
+        self.camera_target = Player(40, 40)
         self.objects.add(self.camera_target)
-        # Добавлено Булатом
+
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
         self.mouse_handlers = []
-        self.cast_list = []
         self.event_list = []
+        self.camera_target.set_controller(self)
 
     def set_caption(self, caption):
         self.caption = caption
@@ -102,9 +103,14 @@ class GameClient:
                                 c.MOUSEMOTION):
                 for handler in self.mouse_handlers:
                     handler(event.type, event.dict["pos"])
+            elif event.type == c.RESIZE:
+                # self.screen = pygame.display.set_mode(event.dict["size"], pygame.FULLSCREEN)
+                # self.camera.set_size(event.dict["size"])
+                pass
         self.event_list.clear()
 
     def update(self, dt):
+        self.camera_target.update(dt)
         self.camera.update(self.camera_target)
         pass
 
@@ -124,7 +130,6 @@ class GameClient:
             self.update_display()
             clock.tick(self.fps)
 
-def start():
-    client = GameClient((1280,720),60)
-    client.run()
-start()
+
+client = GameClient((1280, 720), 60)
+client.run()
