@@ -27,3 +27,4 @@ player_str_growth = 1
 player_agi_growth = 1
 player_int_growth = 1
 player_vit_growth = 1
+

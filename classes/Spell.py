@@ -9,4 +9,3 @@ class Spell:
 
     def update(self, dt):
         pass
-

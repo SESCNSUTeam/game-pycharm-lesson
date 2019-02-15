@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import classes.config as c
 from classes.CommonGameObject import CommonGameObject
@@ -53,6 +55,8 @@ class Player(ClientGameObject):
             self._right = not self._right
         if key == pygame.K_s:
             self._down = not self._down
+        if key == pygame.K_ESCAPE:
+            sys.exit()
 
     def set_controller(self, client):
         client.keydown_handlers[pygame.K_w].append(self.handler)
@@ -63,6 +67,7 @@ class Player(ClientGameObject):
         client.keyup_handlers[pygame.K_s].append(self.handler)
         client.keyup_handlers[pygame.K_a].append(self.handler)
         client.keyup_handlers[pygame.K_d].append(self.handler)
+        client.keyup_handlers[pygame.K_ESCAPE].append(self.handler)
 
 
 class Wall(CommonGameObject):
