@@ -1,0 +1,53 @@
+Памятка для Булата:
+    Инстанция - ивент - заклинание
+    Заклинание - список заклинаний - обработчик
+    Ивент - список ивентов - обработчик
+    Самое главное - все обрабатывает сервер, нам даже клики не нужны, все pygame'овское останется таковым
+	Все, что делает игрок - пересобирает pygame ивенты в Game.classes.Event.Event() и отправляет
+-------------------------------------------------------------------------------------------------------
+
+ИЕРАРХИЯ ПАПОК:
+
+project_folder-
+
+    classes-
+        Camera.py
+        CommonGameObject.py
+        config.py
+        Event.py
+        GameObject.py
+        Spell.py
+        MapLoader.py
+        ServerEvent.py
+
+    client-
+
+        GameClient.py
+
+        Interface-
+            Button.py
+            ...
+
+        resources-
+            ball.png
+            black.png
+            brick.png
+            bullet2x2.png
+            green.png
+            dino.jpg
+            dog.jpg
+            dog2.jpg
+            google.jpg
+            green.jpg
+            ...
+
+ИЕРАРХИЯ КЛАССОВ:
+
+    CommonGameObject-
+
+        ClientGameObject-
+            Wall
+            ...
+
+        ServerGameObject-
+

@@ -1,6 +1,6 @@
 import json
 import pygame
-from classes.GameObjects import Wall
+from classes.GameObject import Wall
 
 
 class Map:

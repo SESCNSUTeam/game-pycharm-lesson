@@ -1,6 +1,11 @@
+import sys
+from collections import defaultdict
+
 from classes import MapLoader
 from classes.camera import Camera
-from classes.GameObjects import *
+from classes.Event import convert_event_py_to_g
+from classes.GameObject import *
+import classes.config as c
 
 
 class GameClient:
@@ -24,11 +29,17 @@ class GameClient:
         self.client = None
         self.server = None
         self.events = None
-        self.map = MapLoader.Map("maps\\map_test.json")
+        self.map = MapLoader.Map("maps//map_test.json")
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.camera = Camera(self.width, self.height)
         self.camera_target = ClientGameObject(40, 40)
         self.objects.add(self.camera_target)
+        # Добавлено Булатом
+        self.keydown_handlers = defaultdict(list)
+        self.keyup_handlers = defaultdict(list)
+        self.mouse_handlers = []
+        self.cast_list = []
+        self.event_list = []
 
     def set_caption(self, caption):
         self.caption = caption
@@ -73,24 +84,27 @@ class GameClient:
         pass
 
     def event_handling(self):
-        if pygame.display.get_active():
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.play = False
-                if event.type == pygame.JOYHATMOTION:
-                    self.camera_target.move(10, 0)
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_d:
-                        self.camera_target.move(10, 0)
-                    elif event.key == pygame.K_a:
-                        self.camera_target.move(-10, 0)
-                    elif event.key == pygame.K_w:
-                        self.camera_target.move(0, -10)
-                    elif event.key == pygame.K_s:
-                        self.camera_target.move(0, 10)
-                        print(self.camera_target.rect.topleft)
+        for py_event in pygame.event.get():
+            self.event_list.append(convert_event_py_to_g(py_event))
 
-    def update(self):
+        for event in self.event_list:
+            if event.type == c.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == c.KEYDOWN:
+                for handler in self.keydown_handlers[event.dict["key"]]:
+                    handler(event.dict["key"])
+            elif event.type == c.KEYUP:
+                for handler in self.keyup_handlers[event.dict["key"]]:
+                    handler(event.dict["key"])
+            elif event.type in (c.MOUSEBUTTONDOWN,
+                                c.MOUSEBUTTONUP,
+                                c.MOUSEMOTION):
+                for handler in self.mouse_handlers:
+                    handler(event.type, event.dict["pos"])
+        self.event_list.clear()
+
+    def update(self, dt):
         self.camera.update(self.camera_target)
         pass
 
@@ -106,6 +120,12 @@ class GameClient:
         clock = pygame.time.Clock()
         while self.play:
             self.event_handling()
-            self.update()
+            self.update(clock.get_time())
             self.update_display()
             clock.tick(self.fps)
+
+
+def start():
+    client = GameClient((1280, 720), 60)
+    client.run()
+start()
