@@ -70,6 +70,14 @@ class CommonGameObject(pygame.sprite.Sprite):
     def h(self, value):
         self.global_rect.height = value
 
+    @left.setter
+    def left(self, value):
+        self.x = value
+
+    @top.setter
+    def top(self, value):
+        self.y = value
+
     @right.setter
     def right(self, value):
         self.global_rect.right = value
