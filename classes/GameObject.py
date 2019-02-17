@@ -32,7 +32,7 @@ class ClientGameObject(CommonGameObject):
 class ServerGameObject(CommonGameObject):
 
     def __init__(self, x, y, w=0, h=0):
-        CommonGameObject.__init__(x, y, w, h)
+        CommonGameObject.__init__(self, x, y, w, h)
         self.isAlive = True
 
     def update(self, *args):
