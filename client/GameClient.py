@@ -10,13 +10,13 @@ class GameClient:
 
     def __init__(self, size, fps):
 
-        """ init block"""
+        """ init block """
 
         pygame.init()
         pygame.font.init()
         pygame.joystick.init()
 
-        """ display block"""
+        """ display block """
 
         self.resolution = size
         self.fps = fps
@@ -31,18 +31,6 @@ class GameClient:
         for j in self.joys:
             j.init()
 
-        """ ingame block """
-
-        self.objects = pygame.sprite.Group()
-        self.background = pygame.Surface(self.resolution)
-        self.background.fill((254, 65, 43))
-        self.map = MapLoader.Map("maps\map_test.json")
-        self.session = None
-
-        self.camera_target = Player(40, 40)
-        self.objects.add(self.camera_target)
-        self.camera_target.set_controller(self)
-
         """ handlers block """
 
         self.keydown_handlers = defaultdict(list)
@@ -54,6 +42,18 @@ class GameClient:
 
         self.do_quit = False
         self.play = True
+
+        """ ingame block """
+
+        self.objects = pygame.sprite.Group()
+        self.background = pygame.Surface(self.resolution)
+        self.background.fill((254, 65, 43))
+        self.map = MapLoader.Map("maps\map_test.json")
+        self.session = None
+
+        self.camera_target = Player(40, 40)
+        self.objects.add(self.camera_target)
+        self.camera_target.set_controller(self)
 
     def set_caption(self, caption):
         self.caption = caption
@@ -137,15 +137,15 @@ class GameClient:
     def run(self):
         clock = pygame.time.Clock()
         while self.play:
+
             self.sits()
             self.event_handling()
             self.rifs()
+
             if self.do_quit:
                 self.quit()
+
             self.update(clock.get_time())
             self.update_display()
             clock.tick(self.fps)
 
-
-client = GameClient((1280, 720), 60)
-client.run()

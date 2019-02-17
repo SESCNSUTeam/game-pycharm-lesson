@@ -3,7 +3,11 @@ import sys
 import pygame
 import classes.config as c
 from classes.CommonGameObject import CommonGameObject
+import pygame.math
+
+
 unload_img = "client\\resources\\green.png"
+
 
 def load_image(image):
     try:
@@ -24,7 +28,17 @@ class ClientGameObject(CommonGameObject):
         self.global_rect.size = self.rect.size
         self.isAlive = True
 
-    def update(self, dt):
+
+class ServerGameObject(CommonGameObject):
+
+    def __init__(self, x, y, w=0, h=0):
+        CommonGameObject.__init__(x, y, w, h)
+        self.isAlive = True
+
+    def update(self, *args):
+        pass
+
+    def on_collision(self, obj):
         pass
 
 
@@ -64,10 +78,12 @@ class Player(ClientGameObject):
         client.keydown_handlers[pygame.K_s].append(self.handler)
         client.keydown_handlers[pygame.K_a].append(self.handler)
         client.keydown_handlers[pygame.K_d].append(self.handler)
+
         client.keyup_handlers[pygame.K_w].append(self.handler)
         client.keyup_handlers[pygame.K_s].append(self.handler)
         client.keyup_handlers[pygame.K_a].append(self.handler)
         client.keyup_handlers[pygame.K_d].append(self.handler)
+
         client.keyup_handlers[pygame.K_ESCAPE].append(self.handler)
 
     def move(self, dx, dy):
@@ -75,17 +91,10 @@ class Player(ClientGameObject):
         self.y += dy
 
 
-class Wall(CommonGameObject):
+class Wall(ClientGameObject):
 
     def __init__(self, x, y, w, h):
-        CommonGameObject.__init__(self, x, y)
+        ClientGameObject.__init__(self, x, y)
         self.image = pygame.Surface((w, h))
         self.image.fill((34, 34, 34))
-        self.rect = pygame.Rect(0, 0, w, h)
-
-
-class SimpleMob(ClientGameObject):
-
-    def __init__(self, x, y, image=unload_img):
-        ClientGameObject.__init__(x, y, image)
-        
+        self.global_rect = pygame.Rect(x, y, w, h)

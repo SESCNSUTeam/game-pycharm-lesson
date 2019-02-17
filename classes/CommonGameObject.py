@@ -38,6 +38,22 @@ class CommonGameObject(pygame.sprite.Sprite):
     def h(self):
         return self.global_rect.height
 
+    @property
+    def right(self):
+        return self.global_rect.right
+
+    @property
+    def bottom(self):
+        return self.global_rect.bottom
+
+    @property
+    def left(self):
+        return self.x
+
+    @property
+    def top(self):
+        return self.y
+
     @x.setter
     def x(self, value):
         self.global_rect.left = value
@@ -53,6 +69,14 @@ class CommonGameObject(pygame.sprite.Sprite):
     @h.setter
     def h(self, value):
         self.global_rect.height = value
+
+    @right.setter
+    def right(self, value):
+        self.global_rect.right = value
+
+    @bottom.setter
+    def bottom(self, value):
+        self.global_rect.bottom = value
 
     @classmethod
     def instant(cls, x, y, w=0, h=0):
