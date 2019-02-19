@@ -14,7 +14,7 @@ class ClientHandler(asyncore.dispatcher):
         return self.connected
 
     def handle_error(self):
-        pass
+        print("ClientHandler exception occurred!")
 
     def handle_read(self):
         data = self.recv(1024)
@@ -22,6 +22,6 @@ class ClientHandler(asyncore.dispatcher):
             self.input.append(_pickle.loads(data))
 
     def handle_write(self):
-        if bool(self.data_to_write):
+        if self.data_to_write:
             data = _pickle.dumps(self.data_to_write.pop(0))
             self.send(data)

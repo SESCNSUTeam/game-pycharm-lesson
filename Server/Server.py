@@ -12,7 +12,6 @@ class Server(asyncore.dispatcher, threading.Thread):
         asyncore.dispatcher.__init__(self)
         threading.Thread.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.set_reuse_addr()
         self.bind(self.address)
         self.listen(MAX_CONNECTIONS)
 
@@ -39,3 +38,8 @@ class Server(asyncore.dispatcher, threading.Thread):
 
     def run(self):
         asyncore.loop()
+
+
+if __name__ == '__main__':
+    s = Server("localhost", 9090)
+    s.start()

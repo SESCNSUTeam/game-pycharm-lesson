@@ -11,10 +11,12 @@ class Client(asyncore.dispatcher, threading.Thread):
         threading.Thread.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.name = name
-        self.connect(self.address)
 
         self.input = []
         self.data_to_write = []
+
+    def conn(self):
+        self.connect(self.address)
 
     def get_input(self):
         inp = {self.name: self.input}
@@ -29,10 +31,10 @@ class Client(asyncore.dispatcher, threading.Thread):
         print("Successfully connected to {}".format(self.address[0]))
 
     def handle_error(self):
-        pass
+        print("Client error occurred!")
 
     def handle_write(self):
-        if bool(self.data_to_write):
+        if self.data_to_write:
             self.send(_pickle.dumps(self.data_to_write.pop(0)))
 
     def handle_read(self):
@@ -42,3 +44,7 @@ class Client(asyncore.dispatcher, threading.Thread):
 
     def run(self):
         asyncore.loop()
+
+
+if __name__ == '__main__':
+    pass
