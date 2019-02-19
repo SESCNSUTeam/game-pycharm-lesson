@@ -81,9 +81,6 @@ class GameClient:
     def load_object(self, obj):
         self.objects.add(obj)
 
-    def delete_object(self, obj):
-        obj.do_kill()
-
     def has_object(self, obj):
         self.objects.has(obj)
 
@@ -104,7 +101,7 @@ class GameClient:
             event = convert_event_py_to_g(py_event)
             self.event_list.append(event)
             if event.type == c.QUIT:
-                self.do_quit = True
+                self.play = False
                 break
             elif event.type == c.KEYDOWN:
                 for handler in self.keydown_handlers[event.dict["key"]]:
@@ -137,15 +134,14 @@ class GameClient:
     def run(self):
         clock = pygame.time.Clock()
         while self.play:
-
             self.sits()
             self.event_handling()
             self.rifs()
-
-            if self.do_quit:
-                self.quit()
-
             self.update(clock.get_time())
             self.update_display()
             clock.tick(self.fps)
+        self.quit()
 
+
+ch = GameClient((560,  400), 60)
+ch.run()

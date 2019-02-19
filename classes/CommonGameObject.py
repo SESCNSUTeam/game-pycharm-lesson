@@ -5,7 +5,7 @@ class CommonGameObject(pygame.sprite.Sprite):
 
     Id = 0
 
-    def __init__(self, x, y, w=0, h=0, *args):
+    def __init__(self, x, y, w=0, h=0):
         pygame.sprite.Sprite.__init__(self)
         self.global_rect = pygame.Rect(x, y, w, h)
         self.Id = -1
@@ -92,4 +92,3 @@ class CommonGameObject(pygame.sprite.Sprite):
         cgo.Id = CommonGameObject.Id
         CommonGameObject.Id += 1
         return cgo
-

@@ -74,6 +74,7 @@ class Player(ClientGameObject):
             sys.exit()
 
     def set_controller(self, client):
+
         client.keydown_handlers[pygame.K_w].append(self.handler)
         client.keydown_handlers[pygame.K_s].append(self.handler)
         client.keydown_handlers[pygame.K_a].append(self.handler)
