@@ -6,7 +6,7 @@ from classes.CommonGameObject import CommonGameObject
 import pygame.math
 
 
-unload_img = "client\\resources\\green.png"
+unload_img = "..//client//resources//green.png"
 
 
 def load_image(image):
@@ -61,7 +61,7 @@ class SimpleMob(ServerGameObject):
     def _move(self, dx, dy):
         self.global_rect.move_ip(dx, dy)
 
-    def update(self, *args):
+    def update(self, dt):
         if self.left < 0:
             self.speed[0] = 1
         elif self.right > 600:

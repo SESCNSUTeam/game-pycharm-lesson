@@ -40,7 +40,7 @@ class GameServer:
         self.init()
         c = pygame.time.Clock()
         while self.play:
-            self.objects.update()
+            # self.objects.update()
             if len(self.server.connections) != 0:
                 inp = self.server.get_input()
                 for cl_id in inp:

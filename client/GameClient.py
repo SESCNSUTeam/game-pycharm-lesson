@@ -49,7 +49,7 @@ class GameClient:
         self.objects = pygame.sprite.Group()
         self.background = pygame.Surface(self.resolution)
         self.background.fill((254, 65, 43))
-        self.map = MapLoader.Map("maps\map_test.json")
+        self.map = MapLoader.Map("..//maps//map_test.json")
         self.session = None
 
         #self.camera_target = Player(40, 40)
