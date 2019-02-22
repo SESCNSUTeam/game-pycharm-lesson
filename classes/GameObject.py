@@ -31,9 +31,12 @@ class ClientGameObject(CommonGameObject):
 
 class ServerGameObject(CommonGameObject):
 
+    class_id = 1
+
     def __init__(self, x, y, w=0, h=0):
         CommonGameObject.__init__(self, x, y, w, h)
         self.isAlive = True
+        self.rect = self.global_rect
 
     def update(self, *args):
         pass
@@ -41,55 +44,31 @@ class ServerGameObject(CommonGameObject):
     def on_collision(self, obj):
         pass
 
+    @property
+    def info(self):
+        return self.id, (self.x, self.y, 0), self.class_id
 
-class Player(ClientGameObject):
-    def __init__(self, x, y):
-        ClientGameObject.__init__(self, x, y)
-        self._left = False
-        self._right = False
-        self._up = False
-        self._down = False
-        self.speed = c.player_speed/1000
 
-    def update(self, dt):
-        if self._up:
-            self.move(0, -self.speed*dt)
-        if self._down:
-            self.move(0, self.speed*dt)
-        if self._right:
-            self.move(self.speed*dt, 0)
-        if self._left:
-            self.move(-self.speed*dt, 0)
+class SimpleMob(ServerGameObject):
 
-    def handler(self, key):
-        if key == pygame.K_w:
-            self._up = not self._up
-        if key == pygame.K_a:
-            self._left = not self._left
-        if key == pygame.K_d:
-            self._right = not self._right
-        if key == pygame.K_s:
-            self._down = not self._down
-        if key == pygame.K_ESCAPE:
-            sys.exit()
+    class_id = 2
 
-    def set_controller(self, client):
+    def __init__(self, x, y, w, h):
+        ServerGameObject.__init__(self, x, y, w, h)
+        self.speed = [1, 0]
+        self.changed = False
 
-        client.keydown_handlers[pygame.K_w].append(self.handler)
-        client.keydown_handlers[pygame.K_s].append(self.handler)
-        client.keydown_handlers[pygame.K_a].append(self.handler)
-        client.keydown_handlers[pygame.K_d].append(self.handler)
+    def _move(self, dx, dy):
+        self.global_rect.move_ip(dx, dy)
 
-        client.keyup_handlers[pygame.K_w].append(self.handler)
-        client.keyup_handlers[pygame.K_s].append(self.handler)
-        client.keyup_handlers[pygame.K_a].append(self.handler)
-        client.keyup_handlers[pygame.K_d].append(self.handler)
-
-        client.keyup_handlers[pygame.K_ESCAPE].append(self.handler)
-
-    def move(self, dx, dy):
-        self.x += dx
-        self.y += dy
+    def update(self, *args):
+        if self.left < 0:
+            self.speed[0] = 1
+        elif self.right > 600:
+            self.speed[0] = -1
+        self._move(self.speed[0], 0)
+        print(self.x)
+        self.changed = True
 
 
 class Wall(ClientGameObject):
@@ -99,3 +78,7 @@ class Wall(ClientGameObject):
         self.image = pygame.Surface((w, h))
         self.image.fill((34, 34, 34))
         self.global_rect = pygame.Rect(x, y, w, h)
+
+
+df = ServerGameObject(0, 0, 3, 5)
+print(df.class_id)

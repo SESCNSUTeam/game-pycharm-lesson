@@ -1,2 +1,15 @@
+<<<<<<< HEAD
 .idea/
 __pycache__/
+=======
+
+.idea/
+__pychache__/
+venv/
+classes/__pycache__/Camera.cpython-36.pyc
+classes/__pycache__/CommonGameObject.cpython-36.pyc
+classes/__pycache__/config.cpython-36.pyc
+classes/__pycache__/Event.cpython-36.pyc
+classes/__pycache__/GameObject.cpython-36.pyc
+classes/__pycache__/MapLoader.cpython-36.pyc
+>>>>>>> Roma's-branch

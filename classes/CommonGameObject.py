@@ -3,12 +3,13 @@ import pygame
 
 class CommonGameObject(pygame.sprite.Sprite):
 
+    class_id = 0
     Id = 0
 
     def __init__(self, x, y, w=0, h=0):
         pygame.sprite.Sprite.__init__(self)
         self.global_rect = pygame.Rect(x, y, w, h)
-        self.Id = -1
+        self.id = -1
 
     @property
     def center(self):
@@ -89,6 +90,6 @@ class CommonGameObject(pygame.sprite.Sprite):
     @classmethod
     def instant(cls, x, y, w=0, h=0):
         cgo = cls(x, y, w, h)
-        cgo.Id = CommonGameObject.Id
+        cgo.id = CommonGameObject.Id
         CommonGameObject.Id += 1
         return cgo
