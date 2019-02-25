@@ -7,6 +7,7 @@ import pygame.math
 
 
 unload_img = "client\\resources\\green.png"
+image_dict = {0: unload_img, 1: unload_img, 2: unload_img, 3: unload_img, 4: unload_img}
 
 
 def load_image(image):
@@ -21,7 +22,8 @@ def load_image(image):
 
 class ClientGameObject(CommonGameObject):
 
-    def __init__(self, x, y, image=unload_img):
+    def __init__(self, x, y, class_id):
+        image = image_dict[class_id]
         CommonGameObject.__init__(self, x, y)
         self.image = load_image(image)
         self.rect = self.image.get_rect()
@@ -67,18 +69,18 @@ class SimpleMob(ServerGameObject):
         elif self.right > 600:
             self.speed[0] = -1
         self._move(self.speed[0], 0)
-        print(self.x)
         self.changed = True
 
 
 class Wall(ClientGameObject):
 
+    class_id = -1
+
     def __init__(self, x, y, w, h):
-        ClientGameObject.__init__(self, x, y)
+        ClientGameObject.__init__(self, x, y, 2)
         self.image = pygame.Surface((w, h))
         self.image.fill((34, 34, 34))
         self.global_rect = pygame.Rect(x, y, w, h)
 
 
-df = ServerGameObject(0, 0, 3, 5)
-print(df.class_id)
+

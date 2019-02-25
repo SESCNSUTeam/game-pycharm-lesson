@@ -11,29 +11,25 @@ class GameServer:
         self.objects = pygame.sprite.Group()
         self.play = True
 
+    @property
+    def any_on_connect(self):
+        return True if len(self.server.connections) else False
+
     def on_connect(self):
         pass
 
     def init(self):
-        for i in range(4):
+        for i in range(30):
             obj = SimpleMob.instant(i, i * 20, 10, 10)
             self.objects.add(obj)
 
-    def obj_init_info(self):
-        init_info = []
+    def obj_info(self, act):
+        info = []
         for obj in self.objects:
             obj_id, pos, cls_id = obj.info
-            obj_info = {"obj_id": obj_id, "act_id": 0, "pos": pos, "cls_id": cls_id}
-            init_info.append(obj_info)
-        return init_info
-
-    def obj_move_info(self):
-        move_info = []
-        for obj in self.objects:
-            obj_id, pos, _ = obj.info
-            obj_info = {"obj_id": obj_id, "act_id": 1, "pos": pos}
-            move_info.append(obj_info)
-        return move_info
+            object_info = {"obj_id": obj_id, "act_id": act, "pos": pos, 'cls_id': cls_id}
+            info.append(object_info)
+        return info
 
     def run(self):
         self.server.start()
@@ -41,16 +37,17 @@ class GameServer:
         c = pygame.time.Clock()
         while self.play:
             self.objects.update()
-            if len(self.server.connections) != 0:
+            if self.any_on_connect:
                 inp = self.server.get_input()
+                print(inp)
                 for cl_id in inp:
                     if inp[cl_id]:
                         for handl in inp[cl_id]:
                             if handl[1] == 0:
-                                self.server.add_output_data(self.obj_init_info())
+                                self.server.add_output_data(self.obj_info(0))
                             elif handl[1] == 1:
-                                self.server.add_output_data(self.obj_move_info())
-            c.tick(50)
+                                self.server.add_output_data(self.obj_info(1))
+            c.tick(600)
 
 
 s = GameServer("localhost", 9090)

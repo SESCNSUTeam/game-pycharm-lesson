@@ -24,8 +24,7 @@ class Client(asyncore.dispatcher, threading.Thread):
         return inp
 
     def add_output_data(self, data):
-        for obj in data:
-            self.data_to_write.append(obj)
+        self.data_to_write.append(data)
 
     def handle_connect(self):
         print("Successfully connected to {}".format(self.address[0]))
