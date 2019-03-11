@@ -1,17 +1,10 @@
-import sys
-
 import pygame
-import classes.config as c
 from classes.CommonGameObject import CommonGameObject
 import pygame.math
 
 
-# <<<<<<< HEAD
 unload_img = "..//client//resources//green.png"
-# =======
-unload_img = "client\\resources\\green.png"
 image_dict = {0: unload_img, 1: unload_img, 2: unload_img, 3: unload_img, 4: unload_img}
-# >>>>>>> 20c135e237d874e6237d56ea50cb6ff853e52ae3
 
 
 def load_image(image):

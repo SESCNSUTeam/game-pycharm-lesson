@@ -23,8 +23,6 @@ class ClientGroup(Group):
 
     def __len__(self):
         return(len(self.sprites()))
-
-
 """
 
 modifing
