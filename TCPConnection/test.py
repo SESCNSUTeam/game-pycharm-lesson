@@ -1,4 +1,5 @@
 import select
+l1 = [1, 2, 3, 4]
+l2 = ['a', 'b', 'c', 'd']
 
-list = {1: 2, 2: 3}
-print(len(list))
+print(dict(zip(l1, l2)))

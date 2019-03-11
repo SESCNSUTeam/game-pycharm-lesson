@@ -2,6 +2,9 @@ import socket
 import _pickle
 import threading
 import select
+import pygame
+
+from time import sleep
 
 
 class TCPClientConnection(threading.Thread):
@@ -10,7 +13,6 @@ class TCPClientConnection(threading.Thread):
         self.address = (host, port)
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.setblocking(False)
         self.running = False
         self.name = -1
 
@@ -19,6 +21,7 @@ class TCPClientConnection(threading.Thread):
 
     def connect(self):
         self.socket.connect(self.address)
+        self.socket.setblocking(False)
 
     def handle_input(self, sockets):
         for socket in sockets:
@@ -27,6 +30,7 @@ class TCPClientConnection(threading.Thread):
                 data = socket.recv(1024)
                 if data:
                     self.output_queue.append(_pickle.loads(data))
+                    print(_pickle.loads(data))
             except ConnectionResetError:
                 print('ConnectionResetError!')
             finally:
@@ -59,3 +63,7 @@ if __name__ == '__main__':
     client = TCPClientConnection('localhost', 9090)
     client.start()
     client.connect()
+    while True:
+        client.send([1])
+        sleep(0.016)
+        pygame.time.Clock().tick(120)

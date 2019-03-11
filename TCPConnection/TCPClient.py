@@ -3,10 +3,8 @@ import _pickle
 
 
 class TCPClient:
-    def __init__(self, connection, id):
+    def __init__(self, connection):
         self.connection = connection
-        self.id = id
-        self.output_queue = []
 
     @property
     def socket(self):
@@ -16,8 +14,9 @@ class TCPClient:
     def id(self):
         return self.id
 
-    def set_id(self, new_id):
-        self.id = new_id
+    @id.setter
+    def id(self, value):
+        self._id = value
 
 
 if __name__ == '__main__':
