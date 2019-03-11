@@ -1,11 +1,11 @@
 from collections import defaultdict
-
 from classes import MapLoader
 from classes.Event import convert_event_py_to_g
 from classes.camera import Camera
 from classes.GameObject import *
 from client.Client import Client
 from classes.groups import ClientGroup
+from classes.interface.menu import *
 
 
 class GameClient:
@@ -45,6 +45,10 @@ class GameClient:
 
         self.play = True
 
+        """ interface block """
+
+        self.buttons = ButtonGroup()
+
         """ ingame block """
 
         self.objects = ClientGroup()
@@ -73,6 +77,9 @@ class GameClient:
     def set_fps(self, fps):
         self.fps = fps
 
+    def load_button(self, btn):
+        self.buttons.add(btn)
+
     def quit(self):
         pygame.quit()
         sys.exit()
@@ -98,6 +105,7 @@ class GameClient:
                                 c.MOUSEMOTION):
                 for handler in self.mouse_handlers:
                     handler(event.type, event.dict["pos"])
+                self.buttons.handle(event.type, event.dict["pos"])
             elif event.type == c.RESIZE:
                 self.set_resolution(event.dict["size"])
         self.event_list.clear()
@@ -108,6 +116,7 @@ class GameClient:
         self.camera.apply(self.map.pr)
         self.map.pr.draw(self.screen)
         self.objects.draw(self.screen)
+        self.buttons.draw(self.screen)
         pygame.display.flip()
 
     def connect_to_server(self, host, port):
@@ -138,30 +147,3 @@ class GameClient:
         """receive information from server"""
         data = self.session.get_input()
         return data[self.name]
-
-
-def run(client):
-    while client.play:
-        client.sits([[], 1])
-        client.event_handling()
-        data = client.rifs()
-
-        for obj in data:
-            if obj['act_id'] == 0:
-                client.create_object(obj)
-
-            if obj['act_id'] == 1:
-                try:
-                    client.move_object(obj)
-                except(KeyError):
-                    client.create_object(obj)
-                    
-        print(len(client.objects))
-        client.update_display()
-        client.clock.tick(client.fps)
-
-
-ch = GameClient((600,  900), 60, 'cl2')
-ch.connect_to_server('localhost', 9090)
-run(ch)
-ch.quit()

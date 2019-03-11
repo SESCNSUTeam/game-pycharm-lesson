@@ -1,6 +1,7 @@
 import pygame
 from server.Server import Server
 from classes.GameObject import SimpleMob
+import sys
 
 
 class GameServer:
@@ -39,16 +40,9 @@ class GameServer:
             self.objects.update()
             if self.any_on_connect:
                 inp = self.server.get_input()
-                print(inp)
-                for cl_id in inp:
-                    if inp[cl_id]:
-                        for handl in inp[cl_id]:
-                            if handl[1] == 0:
-                                self.server.add_output_data(self.obj_info(0))
-                            elif handl[1] == 1:
-                                self.server.add_output_data(self.obj_info(1))
-            c.tick(600)
+                self.server.add_output_data([self.obj_info(1)])
+            c.tick(300)
 
 
-s = GameServer("localhost", 9090)
+s = GameServer("localhost", 9060)
 s.run()

@@ -41,5 +41,5 @@ class Server(asyncore.dispatcher, threading.Thread):
 
 
 if __name__ == '__main__':
-    s = Server("localhost", 9090)
-    s.start()
+    pass
+
