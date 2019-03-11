@@ -5,11 +5,12 @@ from classes.Event import convert_event_py_to_g
 from classes.camera import Camera
 from classes.GameObject import *
 from client.Client import Client
+from classes.groups import ClientGroup
 
 
 class GameClient:
 
-    def __init__(self, size, fps):
+    def __init__(self, size, fps, client_name):
 
         """ init block """
 
@@ -25,7 +26,7 @@ class GameClient:
         self.caption = "Caster-Game"
         self.screen = pygame.display.set_mode(self.resolution, pygame.RESIZABLE)
         self.camera = Camera(self.resolution)
-        self.name = "client"
+        self.name = client_name
 
         """ input block """
 
@@ -45,16 +46,13 @@ class GameClient:
         self.play = True
 
         """ ingame block """
-        self.dict_objects = {}
-        self.objects = pygame.sprite.Group()
+
+        self.objects = ClientGroup()
         self.background = pygame.Surface(self.resolution)
         self.background.fill((254, 65, 43))
         self.map = MapLoader.Map("..//maps//map_test.json")
         self.session = None
-
-        #self.camera_target = Player(40, 40)
-        #self.objects.add(self.camera_target)
-        #self.camera_target.set_controller(self)
+        self.clock = pygame.time.Clock()
 
     def set_caption(self, caption):
         self.caption = caption
@@ -75,19 +73,12 @@ class GameClient:
     def set_fps(self, fps):
         self.fps = fps
 
-    def load_objects(self, objects):
-        for obj in objects:
-            self.objects.add(obj)
-
-    def load_object(self, obj):
-        self.objects.add(obj)
-
-    def has_object(self, obj):
-        self.objects.has(obj)
-
     def quit(self):
         pygame.quit()
         sys.exit()
+
+    def get_events(self):
+        return pygame.event.get()
 
     def event_handling(self):
         for py_event in pygame.event.get():
@@ -111,9 +102,6 @@ class GameClient:
                 self.set_resolution(event.dict["size"])
         self.event_list.clear()
 
-    def update(self, dt):
-        self.objects.update(dt)
-
     def update_display(self):
         self.screen.blit(self.background, (0, 0))
         self.camera.apply(self.objects)
@@ -126,44 +114,54 @@ class GameClient:
         self.session = Client(host, port, self.name)
         self.session.conn()
         self.session.start()
-        self.session.add_output_data([[[], 0]])
+        self.session.add_output_data([[], 0])
         data = self.session.get_input()
-        print(data)
+        while not data:
+            data = self.session.get_input()
         return data
 
-    def sits(self):
+    def create_object(self, obj_info):
+        cl_obj = ClientGameObject(obj_info['pos'][0], obj_info['pos'][1], obj_info['cls_id'])
+        cl_obj.id = obj_info['obj_id']
+        self.objects[cl_obj.id] = cl_obj
+
+    def move_object(self, obj_info):
+        obj_id, obj_pos = obj_info['obj_id'], obj_info['pos']
+        self.objects[obj_id].x = obj_pos[0]
+        self.objects[obj_id].y = obj_pos[1]
+
+    def sits(self, msg):
         """send information to server"""
-        self.session.add_output_data([[[], 1]])
+        self.session.add_output_data(msg)
 
     def rifs(self):
         """receive information from server"""
         data = self.session.get_input()
-        print(data)
-        if data[self.name]:
-            if data[self.name]:
-                objects = data[self.name]
-                for obj in objects:
-                    if obj['act_id'] == 0:
-                        cl_obj = ClientGameObject(obj['pos'][0], obj['pos'][1])
-                        cl_obj.id = obj['obj_id']
-                        self.objects.add(cl_obj)
-                        self.dict_objects[cl_obj.id] = cl_obj
-                    if obj['act_id'] == 1:
-                        self.dict_objects[obj['obj_id']].x = obj['pos'][0]
-                        self.dict_objects[obj['obj_id']].y = obj['pos'][1]
-
-    def run(self):
-        clock = pygame.time.Clock()
-        data = self.connect_to_server("localhost", 9090)
-        while self.play:
-            self.sits()
-            self.event_handling()
-            self.rifs()
-            self.update(clock.get_time())
-            self.update_display()
-            clock.tick(self.fps)
-        self.quit()
+        return data[self.name]
 
 
-ch = GameClient((600,  400), 50)
-ch.run()
+def run(client):
+    while client.play:
+        client.sits([[], 1])
+        client.event_handling()
+        data = client.rifs()
+
+        for obj in data:
+            if obj['act_id'] == 0:
+                client.create_object(obj)
+
+            if obj['act_id'] == 1:
+                try:
+                    client.move_object(obj)
+                except(KeyError):
+                    client.create_object(obj)
+                    
+        print(len(client.objects))
+        client.update_display()
+        client.clock.tick(client.fps)
+
+
+ch = GameClient((600,  900), 60, 'cl2')
+ch.connect_to_server('localhost', 9090)
+run(ch)
+ch.quit()
