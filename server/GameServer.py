@@ -36,22 +36,18 @@ class GameServer:
         self.init()
         c = pygame.time.Clock()
         while self.play:
-<<<<<<< HEAD
-            # self.objects.update()
             if len(self.server.connections) != 0:
-=======
-            self.objects.update()
-            if self.any_on_connect:
->>>>>>> 20c135e237d874e6237d56ea50cb6ff853e52ae3
-                inp = self.server.get_input()
-                print(inp)
-                for cl_id in inp:
-                    if inp[cl_id]:
-                        for handl in inp[cl_id]:
-                            if handl[1] == 0:
-                                self.server.add_output_data(self.obj_info(0))
-                            elif handl[1] == 1:
-                                self.server.add_output_data(self.obj_info(1))
+                self.objects.update()
+                if self.any_on_connect:
+                    inp = self.server.get_input()
+                    print(inp)
+                    for cl_id in inp:
+                        if inp[cl_id]:
+                            for handl in inp[cl_id]:
+                                if handl[1] == 0:
+                                    self.server.add_output_data(self.obj_info(0))
+                                elif handl[1] == 1:
+                                    self.server.add_output_data(self.obj_info(1))
             c.tick(600)
 
 

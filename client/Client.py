@@ -30,7 +30,7 @@ class Client(asyncore.dispatcher, threading.Thread):
         print("Successfully connected to {}".format(self.address[0]))
 
     def handle_error(self):
-        print("Client error occurred!")
+        print("client error occurred!")
 
     def handle_write(self):
         if self.data_to_write:
