@@ -20,8 +20,12 @@ class TCPClientConnection(threading.Thread):
         self.input_queue = []
 
     def connect(self):
-        self.socket.connect(self.address)
-        self.socket.setblocking(False)
+        try:
+            self.socket.connect(self.address)
+            self.socket.setblocking(False)
+            return False
+        except OSError:
+            return True
 
     def handle_input(self, sockets):
         for socket in sockets:
@@ -33,6 +37,11 @@ class TCPClientConnection(threading.Thread):
                     print(_pickle.loads(data))
             except ConnectionResetError:
                 print('ConnectionResetError!')
+                while self.connect():
+                    sleep(1)
+                    print("Try to reset connection...")
+            except _pickle.UnpicklingError:
+                pass
             finally:
                 del data
 
@@ -62,8 +71,9 @@ class TCPClientConnection(threading.Thread):
 if __name__ == '__main__':
     client = TCPClientConnection('localhost', 9090)
     client.start()
-    client.connect()
+    while client.connect():
+        sleep(1)
+        print("Connection failed!")
     while True:
         client.send([1])
-        sleep(0.016)
-        pygame.time.Clock().tick(120)
+        sleep(0.001)
