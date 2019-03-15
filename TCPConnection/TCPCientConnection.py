@@ -1,5 +1,5 @@
 import socket
-import _pickle
+import pickle
 import threading
 import select
 import pygame
@@ -15,7 +15,7 @@ class TCPClientConnection(threading.Thread):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.running = False
         self.name = -1
-
+        self.lock = threading.Lock()
         self.output_queue = []
         self.input_queue = []
 
@@ -33,14 +33,13 @@ class TCPClientConnection(threading.Thread):
             try:
                 data = socket.recv(1024)
                 if data:
-                    self.output_queue.append(_pickle.loads(data))
-                    print(_pickle.loads(data))
+                    self.input_queue.append(pickle.loads(data))
             except ConnectionResetError:
                 print('ConnectionResetError!')
                 while self.connect():
                     sleep(1)
                     print("Try to reset connection...")
-            except _pickle.UnpicklingError:
+            except pickle.UnpicklingError:
                 pass
             finally:
                 del data
@@ -48,10 +47,24 @@ class TCPClientConnection(threading.Thread):
     def handle_output(self, sockets):
         if self.output_queue:
             for socket in sockets:
-                socket.send(_pickle.dumps(self.output_queue.pop(0)))
+                for p in self.output_queue:
+                    data = pickle.dumps(p)
+                    try:
+                        socket.send(data)
+                        self.output_queue.remove(p)
+                    except ConnectionResetError:
+                        while self.connect():
+                            sleep(1)
 
     def send(self, packets):
-        self.output_queue += packets
+        try:
+            self.lock.acquire()
+            self.output_queue += packets
+        except LookupError:
+            pass
+        finally:
+            self.lock.release()
+        print(self.output_queue)
 
     def get_input(self):
         _data = self.output_queue
@@ -75,5 +88,5 @@ if __name__ == '__main__':
         sleep(1)
         print("Connection failed!")
     while True:
-        client.send([1])
+        client.send([['Danya'], ['loh']])
         sleep(0.001)
