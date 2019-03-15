@@ -71,6 +71,14 @@ class CommonGameObject(pygame.sprite.Sprite):
     def h(self, value):
         self.global_rect.height = value
 
+    @centerx.setter
+    def centerx(self, value):
+        self.global_rect.centerx = value
+
+    @centery.setter
+    def centery(self, value):
+        self.global_rect.centery = value
+
     @left.setter
     def left(self, value):
         self.x = value
@@ -86,6 +94,14 @@ class CommonGameObject(pygame.sprite.Sprite):
     @bottom.setter
     def bottom(self, value):
         self.global_rect.bottom = value
+
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+
+    def move_center(self, dx, dy):
+        self.centerx += dx
+        self.centery += dy
 
     @classmethod
     def instant(cls, x, y, w=0, h=0):

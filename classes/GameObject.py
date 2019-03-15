@@ -25,7 +25,7 @@ class ClientGameObject(CommonGameObject):
         self.image = load_image(image)
         self.rect = self.image.get_rect()
         self.global_rect.size = self.rect.size
-        self.isAlive = True
+        self.is_alive = True
 
 
 class ServerGameObject(CommonGameObject):
@@ -42,8 +42,6 @@ class ServerGameObject(CommonGameObject):
     def update(self, *args):
         pass
 
-    def on_collision(self, obj):
-        pass
 
     @property
     def info(self):

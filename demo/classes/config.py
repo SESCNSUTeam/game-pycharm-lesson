@@ -16,21 +16,14 @@ player_int_growth = 1
 player_vit_growth = 1
 
 player_image = None
-player_width = 16
-player_height = 16
+player_width = 32
+player_height = 32
 
 brick_image = None
-brick_width = 48
-brick_height = 16
+brick_width = 64
+brick_height = 32
 
-mob_image = None
-mob_width = 16
-mob_height = 16
-
-bullet_image = None
-bullet_width = 8
-bullet_height = 8
-
-event_spell = pygame.USEREVENT + 1
-event_scroll = pygame.USEREVENT + 2
-event_calculate_behavior = pygame.USEREVENT + 3
+# entity_dict = {1: ('player', player_width, player_height), 2: ('brick', brick_width, brick_height)}
+spell_THROW = pygame.USEREVENT + 1
+spell_SUMMON = pygame.USEREVENT + 2
+spell_THROW_AOE = pygame.USEREVENT + 3
