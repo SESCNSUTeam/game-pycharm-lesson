@@ -1,8 +1,0 @@
-packet from connection:
-    [id, [list of packets]]
-
-packet to server:
-    [event_type, event]
-
-packet from server-client:
-    []
