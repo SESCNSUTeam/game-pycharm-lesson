@@ -10,6 +10,7 @@ class ClientGameObject(CommonGameObject):
         self.image = image_dict[class_id]
         self.rect = self.image.get_rect()
         self.global_rect.size = self.rect.size
+        self.class_id = class_id
 
     def set_pos(self, x, y):
         self.global_rect.x = x

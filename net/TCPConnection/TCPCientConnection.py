@@ -32,7 +32,7 @@ class TCPClientConnection(threading.Thread):
         for sock in readable:
             data = None
             try:
-                data = sock.recv(2048)
+                data = sock.recv(262144)
                 if data:
                     loaded_data = pickle.loads(data)
                     self.input_queue.append(loaded_data)
@@ -41,8 +41,8 @@ class TCPClientConnection(threading.Thread):
                 while self.connect():
                     sleep(1)
                     print("Try to reset connection...")
-            except pickle.UnpicklingError:
-                print('Pickle error')
+            except pickle.UnpicklingError as e:
+                print(e)
                 print(data)
             finally:
                 del data

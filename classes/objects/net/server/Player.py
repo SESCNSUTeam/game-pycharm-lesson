@@ -59,15 +59,15 @@ class Player(ServerGameObject):
                 # self.weapon.shoot(pygame.mouse.get_pos())
                 pass
 
-    def handle(self, key):
+    def handle(self, key, is_down):
         if key == pygame.K_w:
-            self._up = not self._up
+            self._up = is_down
         if key == pygame.K_a:
-            self._left = not self._left
+            self._left = is_down
         if key == pygame.K_d:
-            self._right = not self._right
+            self._right = is_down
         if key == pygame.K_s:
-            self._down = not self._down
+            self._down = is_down
         if key == pygame.K_LSHIFT:
             self.acceleration = not self.acceleration
         if key == pygame.K_c:

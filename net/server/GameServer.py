@@ -11,11 +11,11 @@ def run(server):
         server.handler()
         server.update(clock.get_time())
         server.send()
-        clock.tick(60)
+        clock.tick(120)
 
 
 def main():
-    server = Server('127.0.0.1', 5050)
+    server = Server('localhost', 25565)
     run(server)
 
 

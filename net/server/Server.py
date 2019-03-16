@@ -37,8 +37,8 @@ class Server:
 
         self.player_dict = dict()
 
-        for i in range(2):
-            brick = Brick(32 + config.width_brick * 2 * i, 32, self)
+        for i in range(100):
+            brick = Brick(32 + config.width_brick * i, 32, self)
             self.objects[brick.id] = brick
 
     def on_connection(self, conn_number, conn=None):
@@ -74,11 +74,11 @@ class Server:
             elif event[0] == pygame.KEYUP:
                 print('Key pushed!')
                 for handler in self.key_up_handlers[event[1]]:
-                    handler(event[1])
+                    handler(event[1], False)
             elif event[0] == pygame.KEYDOWN:
                 print('Key unpushed!')
                 for handler in self.key_down_handlers[event[1]]:
-                    handler(event[1])
+                    handler(event[1], True)
             elif event[0] in {pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN}:
                 pass
 
@@ -106,5 +106,5 @@ class Server:
 
     def send(self):
         for obj in self.objects:
-            packet = [1, obj.id, (obj.x, obj.y, 0)]
+            packet = [1, copy.copy(obj.id), (copy.copy(obj.x), copy.copy(obj.y), 0)]
             self.server.push_data(packet)

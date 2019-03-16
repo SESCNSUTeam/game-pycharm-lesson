@@ -157,6 +157,7 @@ class Client:
                     self.move_object(packet)
                 except KeyError:
                     request = ['request', packet[1]]
+                    print('request for {}'.format(packet[1]))
                     self.output.append(request)
             elif packet[0] == 2:
                 try:
