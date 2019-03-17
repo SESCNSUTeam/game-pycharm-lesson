@@ -7,6 +7,8 @@ import select
 
 from time import sleep
 
+from net.client.Parser import pars
+
 
 class TCPClientConnection(threading.Thread):
     def __init__(self, host, port):
@@ -19,6 +21,12 @@ class TCPClientConnection(threading.Thread):
         self.lock = threading.Lock()
         self.output_queue = []
         self.input_queue = []
+
+        self.byte_array = b''
+
+    def pars(self, bytes):
+        index = bytes.find(b'\x01e.')
+        return bytes[:index + 6], bytes[index + 6:]
 
     def connect(self):
         try:
@@ -33,9 +41,16 @@ class TCPClientConnection(threading.Thread):
             data = None
             try:
                 data = sock.recv(262144)
-                if data:
-                    loaded_data = pickle.loads(data)
+                self.byte_array += data
+                for i in range(1000):
+                    packet, self.byte_array = pars(self.byte_array)
+                    if packet is None:
+                        break
+                    loaded_data = pickle.loads(packet)
                     self.input_queue.append(loaded_data)
+                # if data:
+                #     loaded_data = pickle.loads(data)
+                #     self.input_queue.append(loaded_data)
             except ConnectionResetError:
                 print('ConnectionResetError!')
                 while self.connect():
