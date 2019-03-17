@@ -97,7 +97,10 @@ class Server:
 
         for event in pygame.event.get():
             if event.type == gameconsts.event_remove:
-                del self.objects[event.id]
+                try:
+                    del self.objects[event.id]
+                except KeyError:
+                    print("Couldn't delete {}, doesn't exist".format(event.id))
                 packet = [2, event.id]
                 self.server.push_data(packet)
             elif event.type == gameconsts.event_spell:
@@ -120,7 +123,7 @@ class Server:
                     packet = [0, obj.class_id, obj.id, (obj.x, obj.y, 0)]
                     self.server.push_data_by_number(packet, conn_id)
                 except KeyError:
-                    print('Error, obj with id {} has not been founded'.format(inp[2]))
+                    print('Error, obj with id {} has not been founded')
                     print('Info about packet: connection_number {}, packet {}'.format(inp[0], inp[1]))
             else:
                 self.packets.append(inp)

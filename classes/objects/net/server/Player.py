@@ -30,7 +30,7 @@ class Player(ServerGameObject):
 
         self.weapon = Weapon(self)
 
-        self.hp = 5
+        self.hp = 1000
 
         self._fire = False
 

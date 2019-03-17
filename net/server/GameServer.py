@@ -11,7 +11,7 @@ def run(server):
         server.handler()
         server.update(clock.get_time())
         server.send()
-        clock.tick(240)
+        clock.tick(120)
 
 
 def main():

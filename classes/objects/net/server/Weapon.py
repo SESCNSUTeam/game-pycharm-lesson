@@ -3,7 +3,7 @@ from classes.objects.net.server.Bullet import Bullet
 
 class Weapon:
     def __init__(self, owner):
-        self.cool_down = 1000 / 30
+        self.cool_down = 1000 / 10
         self.curr_cooldown = 0
 
         self.ammo = 120
