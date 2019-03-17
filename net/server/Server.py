@@ -54,7 +54,7 @@ class Server:
                 continue
             packet = [0, copy.copy(obj.class_id), copy.copy(obj.id), (copy.copy(obj.x), copy.copy(obj.y), 0)]
             self.server.push_data_by_number(packet, conn_number)
-        print('All information has been sent to {}'.format(conn))
+        # print('All information has been sent to {}'.format(conn))
 
     def on_disconnect(self, conn_number, conn=None):
         print('Disconnected: {}'.format(conn))
@@ -72,15 +72,19 @@ class Server:
             if event[0] == pygame.MOUSEMOTION:
                 self.player_dict[conn_id].mouse_pos = event[1]
             elif event[0] == pygame.KEYUP:
-                print('Key pushed!')
+                print('Key unpushed!')
                 for handler in self.key_up_handlers[event[1]]:
                     handler(event[1], False)
             elif event[0] == pygame.KEYDOWN:
-                print('Key unpushed!')
+                print('Key pushed!')
                 for handler in self.key_down_handlers[event[1]]:
                     handler(event[1], True)
-            elif event[0] in {pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN}:
-                pass
+            elif event[0] == pygame.MOUSEBUTTONUP:
+                for handler in self.mouse_handlers:
+                    handler(event[1], True)
+            elif event[0] ==  pygame.MOUSEBUTTONDOWN:
+                for handler in self.mouse_handlers:
+                    handler(event[1], False)
 
         self.packets.clear()
 

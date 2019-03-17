@@ -31,6 +31,8 @@ class Client:
         pygame.joystick.init()
         """ display block """
 
+        self.request_list = []
+
         self.resolution = size
         self.fps = fps
         self.icon = None
@@ -107,7 +109,7 @@ class Client:
                 packet = [event.type, event.key]
                 self.output.append(packet)
             elif event.type in {pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN}:
-                packet = [event.type, event.pos, event.button]
+                packet = [event.type, event.button]
                 self.output.append(packet)
             else:
                 pass
@@ -145,6 +147,7 @@ class Client:
         output = copy.copy(self.output)
         self.session.send(output)
         self.output.clear()
+        self.request_list.clear()
 
     def receive(self):
         """receive information from server"""
@@ -157,8 +160,11 @@ class Client:
                     self.move_object(packet)
                 except KeyError:
                     request = ['request', packet[1]]
-                    print('request for {}'.format(packet[1]))
-                    self.output.append(request)
+                    '''Проверка на то, что мы еще не отправляли этот запрос на данном тике'''
+                    if packet[1] not in self.request_list:
+                        self.request_list.append(packet[1])
+                        print('request for {}'.format(packet[1]))
+                        self.output.append(request)
             elif packet[0] == 2:
                 try:
                     self.remove_object(packet)

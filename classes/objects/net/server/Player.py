@@ -1,5 +1,6 @@
 import pygame
 
+from classes.objects.net.server.Weapon import Weapon
 from classes.events import spell_request
 from classes.magic.Spell import Throw, Grab
 from classes.objects.net.server.ServerGameObject import ServerGameObject
@@ -26,9 +27,9 @@ class Player(ServerGameObject):
 
         self.mouse_pos = (0, 0)
 
-        # self.weapon = Weapon(self)
-        # self.weapon.cool_down = 1000 / 30
-        # self.weapon.ammo = 60
+        self.weapon = Weapon(self)
+        self.weapon.cool_down = 1000 / 30
+        self.weapon.ammo = 60
 
         self.hp = 10000
 
@@ -77,12 +78,14 @@ class Player(ServerGameObject):
             else:
                 self.curr_spell = 0
                 print(self.spell_list[self.curr_spell].name)
+        if self._fire:
+            self.weapon.shoot(self.mouse_pos)
 
-    def mouse_handler(self, button):
+    def mouse_handler(self, button, is_down):
         if button == 1:
             spell_request(self.spell_list[self.curr_spell], self.mouse_pos)
         elif button == 3:
-            self._fire = not self._fire
+            self._fire = is_down
 
     def set_controller(self, key_down_handler, key_up_handler, mouse_handlers):
         key_down_handler[pygame.K_w].append(self.handle)
