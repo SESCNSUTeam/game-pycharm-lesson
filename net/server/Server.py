@@ -21,14 +21,21 @@ import classes.gameconsts as config
 '''
 
 
+def get_handlers():
+    return defaultdict(list), defaultdict(list), []
+
+
 class Server:
     def __init__(self, host, port):
         self.server = TCPServerConnection(host, port, 4, self)
 
         self.packets = []
-        self.mouse_handlers = []
-        self.key_down_handlers = defaultdict(list)
-        self.key_up_handlers = defaultdict(list)
+
+        self.player_handlers = dict()
+
+        key_down_handlers = defaultdict(list)
+        key_up_handlers = defaultdict(list)
+        mouse_handlers = []
 
         self.play = True
 
@@ -45,7 +52,10 @@ class Server:
         print('Connected {} {}'.format(conn_number, conn))
         player = Player(30, 30, self)
         self.player_dict[conn_number] = player
-        player.set_controller(self.key_down_handlers, self.key_up_handlers, self.mouse_handlers)
+
+        down, up, mouse = get_handlers()
+        player.set_controller(down, up, mouse)
+        self.player_handlers[conn_number] = [down, up, mouse]
         self.objects[player.id] = player
         packet = [0, player.class_id, player.id, (player.x, player.y, 0)]
         self.server.push_data(packet)
@@ -72,19 +82,17 @@ class Server:
             if event[0] == pygame.MOUSEMOTION:
                 self.player_dict[conn_id].mouse_pos = event[1]
             elif event[0] == pygame.KEYUP:
-                print('Key unpushed!')
-                for handler in self.key_up_handlers[event[1]]:
+                for handler in self.player_handlers[conn_id][1][event[1]]:
                     handler(event[1], False)
             elif event[0] == pygame.KEYDOWN:
-                print('Key pushed!')
-                for handler in self.key_down_handlers[event[1]]:
+                for handler in self.player_handlers[conn_id][0][event[1]]:
                     handler(event[1], True)
-            elif event[0] == pygame.MOUSEBUTTONUP:
-                for handler in self.mouse_handlers:
-                    handler(event[1], True)
-            elif event[0] ==  pygame.MOUSEBUTTONDOWN:
-                for handler in self.mouse_handlers:
-                    handler(event[1], False)
+            # elif event[0] == pygame.MOUSEBUTTONUP:
+            #     for handler in self.mouse_handlers:
+            #         handler(event[1], True)
+            # elif event[0] ==  pygame.MOUSEBUTTONDOWN:
+            #     for handler in self.mouse_handlers:
+            #         handler(event[1], False)
 
         self.packets.clear()
 

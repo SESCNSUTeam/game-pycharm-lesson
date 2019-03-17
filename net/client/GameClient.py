@@ -4,7 +4,7 @@ from net.client.Client import Client
 
 
 def run(client):
-    client.connect_to_server('192.168.43.106', 25565)
+    client.connect_to_server('169.254.131.17', 25565)
     clock = pygame.time.Clock()
     while client.play:
         client.receive()

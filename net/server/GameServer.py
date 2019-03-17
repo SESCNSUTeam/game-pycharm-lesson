@@ -15,7 +15,7 @@ def run(server):
 
 
 def main():
-    server = Server('192.168.43.106', 25565)
+    server = Server('169.254.131.17', 25565)
     run(server)
 
 
