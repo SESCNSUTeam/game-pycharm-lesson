@@ -1,5 +1,10 @@
+import copy
+
+import pygame
+
 from classes.objects.CommonGameObject import CommonGameObject
 import classes.idconfig as idconfig
+import classes.gameconsts as gameconsts
 
 
 def object_by_id(entity_id):
@@ -56,7 +61,10 @@ class ServerGameObject(CommonGameObject):
     def is_alive(self):
         if self.hp <= 0:
             self.kill()
-            del self
+
+    def kill(self):
+        event = pygame.event.Event(gameconsts.event_remove, {'id': copy.copy(self.id)})
+        pygame.event.post(event)
 
     @property
     def info(self):

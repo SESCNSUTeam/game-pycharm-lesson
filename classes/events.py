@@ -1,8 +1,9 @@
 import pygame
+import classes.gameconsts as gameconsts
 
 
 def spell_request(spell, pos):
-    event = pygame.event.Event(pygame.USEREVENT + 1, {"pos": pos, "spell": spell})
+    event = pygame.event.Event(gameconsts.event_spell, {"pos": pos, "spell": spell})
     pygame.event.post(event)
 
 

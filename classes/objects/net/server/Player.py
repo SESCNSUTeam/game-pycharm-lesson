@@ -1,11 +1,12 @@
 import pygame
 
-from classes.objects.net.server.Weapon import Weapon
 from classes.events import spell_request
+from classes.images import collide_sprite
 from classes.magic.Spell import Throw, Grab
 from classes.objects.net.server.ServerGameObject import ServerGameObject
 import classes.gameconsts as config
 import classes.idconfig as idconfig
+from classes.objects.net.server.Weapon import Weapon
 
 
 class Player(ServerGameObject):
@@ -28,10 +29,8 @@ class Player(ServerGameObject):
         self.mouse_pos = (0, 0)
 
         self.weapon = Weapon(self)
-        self.weapon.cool_down = 1000 / 30
-        self.weapon.ammo = 60
 
-        self.hp = 10000
+        self.hp = 5
 
         self._fire = False
 
@@ -40,8 +39,12 @@ class Player(ServerGameObject):
 
     def update(self, dt):
         super().update(dt)
+        collide_list = collide_sprite(self, self.world.objects, has_sprite=True)
+
+        for obj in collide_list:
+            obj.on_collision(self)
         '''Обновление оружия'''
-        # self.weapon.update(dt)
+        self.weapon.update(dt)
 
         if not self.is_disabled:
             speed = self.speed
@@ -55,10 +58,8 @@ class Player(ServerGameObject):
                 self.move(speed * dt, 0)
             if self._left:
                 self.move(-speed * dt, 0)
-
             if self._fire:
-                # self.weapon.shoot(pygame.mouse.get_pos())
-                pass
+                self.weapon.shoot(self.mouse_pos)
 
     def handle(self, key, is_down):
         if key == pygame.K_w:
@@ -78,8 +79,6 @@ class Player(ServerGameObject):
             else:
                 self.curr_spell = 0
                 print(self.spell_list[self.curr_spell].name)
-        if self._fire:
-            self.weapon.shoot(self.mouse_pos)
 
     def mouse_handler(self, button, is_down):
         if button == 1:

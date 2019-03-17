@@ -11,7 +11,7 @@ def run(client):
         client.handler()
         client.update_display()
         client.send()
-        clock.tick(60)
+        clock.tick(120)
 
 
 def main():

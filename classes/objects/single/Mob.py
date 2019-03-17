@@ -1,4 +1,4 @@
-from classes.Weapon import Weapon
+from classes.objects.single.Weapon import Weapon
 from classes.objects.single.Object import Object
 import classes.gameconsts as config
 

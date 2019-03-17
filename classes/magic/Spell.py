@@ -12,7 +12,7 @@ class Spell:
 
     def cast_spell(self, world, pos):
         for obj in world.objects:
-            if obj.rect.collidepoint(pos):
+            if obj.global_rect.collidepoint(pos):
                 effects = []
                 for effect in self.buffs:
                     effects.append(copy.copy(effect))

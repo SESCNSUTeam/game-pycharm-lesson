@@ -1,3 +1,4 @@
+from classes.images import collide_sprite
 from classes.objects.single.Object import Object
 import classes.gameconsts as config
 from classes.magic.Effect import Push
@@ -12,6 +13,10 @@ class Brick(Object):
 
     def update(self, dt):
         super().update(dt)
+        collide_list = collide_sprite(self, self.world.objects, has_sprite=True)
+
+        for obj in collide_list:
+            obj.on_collision(self)
 
     def on_collision(self, obj):
         effect = Push(self)

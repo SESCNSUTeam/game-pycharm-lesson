@@ -11,7 +11,7 @@ class Bullet(Object):
         self.image = config.image_bullet
         self.rect = self.image.get_rect()
 
-        self.speed = 1024/1000
+        self.speed = 1024 / 1000
 
         self.damage = 1
 
@@ -46,7 +46,7 @@ class Bullet(Object):
             del self
 
     def on_collision(self, obj):
-        '''Со стреляющим не сталкиваемся'''
+        """Со стреляющим не сталкиваемся"""
         if obj != self.owner:
             '''Не сталкиваемся с друзьями стреляющего'''
             if obj.team != self.owner.team and obj.team != 'world':

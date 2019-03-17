@@ -33,9 +33,10 @@ height_bullet = 8
 
 image_dict = dict()
 
-event_spell = pygame.USEREVENT + 1
-event_scroll = pygame.USEREVENT + 2
-event_calculate_behavior = pygame.USEREVENT + 3
+event_remove = pygame.USEREVENT + 1
+event_spell = pygame.USEREVENT + 4
+event_scroll = pygame.USEREVENT + 5
+event_calculate_behavior = pygame.USEREVENT + 6
 
 
 def init():

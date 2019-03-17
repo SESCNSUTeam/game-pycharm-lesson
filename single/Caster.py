@@ -3,13 +3,13 @@ from collections import defaultdict
 import pygame
 import classes.gameconsts as config
 from classes.Camera import Camera
-from classes.objects.net.images import load_image
+from classes.images import load_image
 from classes.objects.single.Brick import Brick
 from classes.objects.single.Mob import Mob
 from classes.objects.single.Player import Player
 
 
-def collide_sprite(sprite ,sprite_group, has_sprite=True):
+def collide_sprite(sprite, sprite_group, has_sprite=True):
     collide_list = []
 
     for s in sprite_group:

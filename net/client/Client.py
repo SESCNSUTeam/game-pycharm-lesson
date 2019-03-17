@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from classes.Camera import Camera
 from classes.objects.net.client.ClientGameObject import ClientGameObject
-from classes.objects.net.images import *
+from classes.images import *
 from net.TCPConnection.TCPCientConnection import TCPClientConnection
 from classes.groups import GameGroup
 from classes.interface.menu import *
@@ -103,7 +103,9 @@ class Client:
     def handler(self):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEMOTION:
-                packet = [pygame.MOUSEMOTION, event.pos]
+                cam_pos = (self.camera.global_rect.x, self.camera.global_rect.y)
+                pos = (cam_pos[0] + event.pos[0], cam_pos[1] + event.pos[1])
+                packet = [pygame.MOUSEMOTION, pos]
                 self.output.append(packet)
             elif event.type in {pygame.KEYUP, pygame.KEYDOWN}:
                 packet = [event.type, event.key]
@@ -141,6 +143,7 @@ class Client:
 
     def remove_object(self, packet):
         del self.objects[packet[1]]
+        print('deleted {}'.format(packet[1]))
 
     def send(self):
         """send information to server"""

@@ -1,6 +1,6 @@
 import pygame
 
-from classes.Weapon import Weapon
+from classes.objects.single.Weapon import Weapon
 from classes.events import spell_request
 from classes.magic.Spell import Throw, Grab
 from classes.objects.single.Object import Object

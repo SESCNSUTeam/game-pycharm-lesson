@@ -6,8 +6,6 @@ class Weapon:
         self.cool_down = 1000 / 30
         self.curr_cooldown = 0
 
-        self.sps = 1000/self.cool_down
-
         self.ammo = 120
         self.curr_ammo = 0
 
