@@ -4,7 +4,7 @@ from collections import defaultdict
 from classes.Camera import Camera
 from classes.objects.net.client.ClientGameObject import ClientGameObject
 from classes.objects.net.images import *
-from net.TCPConnection.TCPCientConnection import TCPClientConnection
+from net.TCPConnection.TCPClientConnection import TCPClientConnection
 from classes.groups import GameGroup
 from classes.interface.menu import *
 
