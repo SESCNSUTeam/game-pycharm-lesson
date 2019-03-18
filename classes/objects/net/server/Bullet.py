@@ -1,7 +1,7 @@
 import copy
 import pygame
 
-from classes.images import collide_sprite
+from classes.sprites import collide_sprite
 from classes.objects.net.server.ServerGameObject import ServerGameObject
 import classes.gameconsts as gameconsts
 import classes.idconfig as idconfig

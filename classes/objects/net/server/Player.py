@@ -1,7 +1,7 @@
 import pygame
 
 from classes.events import spell_request
-from classes.images import collide_sprite
+from classes.sprites import collide_sprite
 from classes.magic.Spell import Throw, Grab
 from classes.objects.net.server.ServerGameObject import ServerGameObject
 import classes.gameconsts as config

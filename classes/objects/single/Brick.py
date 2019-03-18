@@ -1,4 +1,4 @@
-from classes.images import collide_sprite
+from classes.sprites import collide_sprite
 from classes.objects.single.Object import Object
 import classes.gameconsts as config
 from classes.magic.Effect import Push

@@ -1,9 +1,9 @@
 import copy
 from collections import defaultdict
 
-from classes.Camera import Camera
+from classes.objects.net.client.Camera import Camera
 from classes.objects.net.client.ClientGameObject import ClientGameObject
-from classes.images import *
+from classes.sprites import *
 from net.TCPConnection.TCPCientConnection import TCPClientConnection
 from classes.groups import GameGroup
 from classes.interface.menu import *
@@ -135,7 +135,7 @@ class Client:
             self.camera_target = cl_obj
             self.is_camera_target = True
         self.objects[cl_obj.id] = cl_obj
-        print('Object {} from packet {}'.format(object, packet))
+        # print('Object {} from packet {}'.format(object, packet))
 
     def move_object(self, packet):
         self.objects[packet[1]].x = packet[2][0]
@@ -143,7 +143,7 @@ class Client:
 
     def remove_object(self, packet):
         del self.objects[packet[1]]
-        print('deleted {}'.format(packet[1]))
+        # print('deleted {}'.format(packet[1]))
 
     def send(self):
         """send information to server"""
@@ -166,10 +166,11 @@ class Client:
                     '''Проверка на то, что мы еще не отправляли этот запрос на данном тике'''
                     if packet[1] not in self.request_list:
                         self.request_list.append(packet[1])
-                        print('request for {}'.format(packet[1]))
+                        # print('request for {}'.format(packet[1]))
                         self.output.append(request)
             elif packet[0] == 2:
                 try:
                     self.remove_object(packet)
                 except KeyError:
-                    print('Object with id {} doesn\'t exist'.format(packet[1]))
+                    # print('Object with id {} doesn\'t exist'.format(packet[1]))
+                    pass

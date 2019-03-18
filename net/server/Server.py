@@ -5,6 +5,7 @@ from collections import defaultdict
 
 from classes.groups import GameGroup
 from classes.objects.net.server.Brick import Brick
+from classes.objects.net.server.Mob import Mob
 from classes.objects.net.server.Player import Player
 from net.TCPConnection.TCPServerConnection import TCPServerConnection
 import classes.gameconsts as gameconsts
@@ -45,6 +46,9 @@ class Server:
         for i in range(15):
             brick = Brick((gameconsts.width_brick + 5) * i, 32, self)
             self.objects[brick.id] = brick
+        for i in range(3):
+            mob = Mob(64 + gameconsts.width_mob * i, 64 + gameconsts.height_mob * i, self)
+            self.objects[mob.id] = mob
 
     def on_connection(self, conn_number, conn=None):
         print('Connected {} {}'.format(conn_number, conn))
